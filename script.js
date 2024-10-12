@@ -9,6 +9,9 @@ const dollarsCounter = document.getElementById('dollarsCounter');
 const getGrassButton = document.getElementById('getGrassButton');
 const sellGrassButton = document.getElementById('sellGrassButton');
 const getDirtButton = document.getElementById('getDirtButton');
+const sellAllButton = document.getElementById('sellAllButton');
+
+let dirtAlertEnabled = true;
 
 // Increase grass count when clicking the "Get Grass" button
 getGrassButton.addEventListener('click', () => {
@@ -41,18 +44,39 @@ sellGrassButton.addEventListener('click', () => {
     }
 });
 
-// "Get Dirt" button logic (unlocked after 300 grass or 3 dirt)
+// "Get Dirt" button logic
 getDirtButton.addEventListener('click', () => {
     dirtCount++;
     grassMultiplier = 3;
     dirtCounter.style.display = 'block';
     dirtCounter.textContent = `Dirt: ${dirtCount}`;
 
-    // Check if player has reached the dirt threshold
-    if (dirtCount >= 3) {
-        alert("You have unlocked a special dirt!");
-        // Add further logic for what happens with dirt collection
+    // Show "Sell All" button after 15 dirt
+    if (dirtCount >= 15) {
+        dirtAlertEnabled = false;  // Stop showing alerts after 15 dirt
+        sellAllButton.style.display = 'inline-block';
     }
+
+    // Show alert until 15 dirt is collected
+    if (dirtAlertEnabled && dirtCount < 15) {
+        alert("You have unlocked a special dirt!");
+    }
+});
+
+// "Sell All" button logic (appears after 15 dirt)
+sellAllButton.addEventListener('click', () => {
+    dollars += (grassCount * 1.1235) + (dirtCount * 100);  // Adjust as needed for dirt value
+    grassCount = 0;
+    dirtCount = 0;
+    grassMultiplier = 1;
+
+    // Update displays
+    grassCounter.textContent = `Grass: ${grassCount}`;
+    dirtCounter.textContent = `Dirt: ${dirtCount}`;
+    dollarsCounter.textContent = `Dollars: ${dollars}`;
+
+    // Hide "Sell All" button after selling all
+    sellAllButton.style.display = 'none';
 });
 
 // Optional: Add settings functionality
