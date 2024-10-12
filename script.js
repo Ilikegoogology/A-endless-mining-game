@@ -17,7 +17,7 @@ getGrassButton.addEventListener('click', () => {
     grassCounter.textContent = `Grass: ${grassCount}`;
 
     // Check if grass count reaches 1e6 to unlock Dirt
-    if (grassCount >= 1e6) {
+    if (grassCount >= 100) {
         unlockDirt();
     }
     
